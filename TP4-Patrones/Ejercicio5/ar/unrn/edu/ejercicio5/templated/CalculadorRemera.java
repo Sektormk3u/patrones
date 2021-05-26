@@ -8,8 +8,9 @@ public abstract class CalculadorRemera {
 		this.precioUnitario = precio;
 	}
 
-	public double calcularPrecio() { // Si el dia de mañana existe mas logica, se agrega aca
-		return precioFinal(this.precioUnitario);
+	public double calcularPrecio() {
+		// Si el dia de mañana existe mas logica, se agrega aca - logica templated
+		return this.precioUnitario + (this.precioUnitario);
 	}
 
 	protected abstract double precioFinal(double precioUnitario);

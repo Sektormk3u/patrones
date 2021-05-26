@@ -8,7 +8,7 @@ public class RemeraNacional extends CalculadorRemera {
 
 	@Override
 	protected double precioFinal(double precioUnitario) {
-		return precioUnitario + (precioUnitario * 0.015) - (precioUnitario * 0.2) // bonificacion
+		return (precioUnitario * 0.015) - (precioUnitario * 0.2) // bonificacion
 				+ (precioUnitario * 0.15); 
 																												// por
 																												// eso
