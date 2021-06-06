@@ -12,11 +12,17 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
+import ar.unrn.edu.email.ServicioEmail;
 import ar.unrn.edu.modelo.RepositorioDeVentas;
 import ar.unrn.edu.modelo.Venta;
 
 public class PersistenciaBaseDeDatos implements RepositorioDeVentas {
 	private Connection dbConn;
+	private ServicioEmail servicioMail;
+	
+	public PersistenciaBaseDeDatos() {
+		this.servicioMail = new ServicioEmail();
+	}
 
 	private void setupBaseDeDatos() {
 		String url = "jdbc:mysql://localhost:3306/parcial";
@@ -30,7 +36,7 @@ public class PersistenciaBaseDeDatos implements RepositorioDeVentas {
 	}
 
 	@Override
-	public void realizarVenta(double litros, double precio, LocalDateTime fecha) {
+	public void realizarVenta(double litros, double precio, LocalDateTime fecha, String destinatario) {
 		setupBaseDeDatos();
 		try {
 			PreparedStatement st = dbConn
@@ -39,6 +45,7 @@ public class PersistenciaBaseDeDatos implements RepositorioDeVentas {
 			st.setDouble(2, precio);
 			st.setDate(3, convertirDateParaBaseDeDatos(fecha));
 			st.execute();
+			notificar(destinatario);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -77,5 +84,11 @@ public class PersistenciaBaseDeDatos implements RepositorioDeVentas {
 
 	private String convertirParaConsulta(LocalDateTime l) {
 		return l.getYear() + "-" + l.getMonthValue() + "-" + l.getDayOfMonth();
+	}
+
+	@Override
+	public void notificar(String destinatario) {
+		servicioMail.enviarEmail(destinatario);
+		
 	}
 }

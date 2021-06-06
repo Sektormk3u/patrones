@@ -11,19 +11,22 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
+import ar.unrn.edu.email.ServicioEmail;
 import ar.unrn.edu.modelo.RepositorioDeVentas;
 import ar.unrn.edu.modelo.Venta;
 
 public class PersistenciaEnArchivoLocal implements RepositorioDeVentas {
 
 	private String path;
+	private ServicioEmail servicioMail;
 
 	public PersistenciaEnArchivoLocal(String path) {
 		this.path = path;
+		this.servicioMail = new ServicioEmail();
 	}
 
 	@Override
-	public void realizarVenta(double litros, double precio, LocalDateTime fecha) {
+	public void realizarVenta(double litros, double precio, LocalDateTime fecha, String destinatario) {
 		try {
 			String fechaString = litros + ", " + precio + ", " + fechaToString(fecha) + "\n";
 			File file = new File(path);
@@ -35,6 +38,7 @@ public class PersistenciaEnArchivoLocal implements RepositorioDeVentas {
 				fechaString = "\n" + fechaString;
 			}
 			Files.write(Paths.get(path), fechaString.getBytes(), StandardOpenOption.APPEND);
+			notificar(destinatario);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -78,6 +82,11 @@ public class PersistenciaEnArchivoLocal implements RepositorioDeVentas {
 
 	private String fechaToString(LocalDateTime fecha) {
 		return fecha.getDayOfMonth() + "/" + fecha.getMonthValue() + "/" + fecha.getYear();
+	}
+
+	@Override
+	public void notificar(String destinatario) {
+		servicioMail.enviarEmail(destinatario);
 	}
 
 }

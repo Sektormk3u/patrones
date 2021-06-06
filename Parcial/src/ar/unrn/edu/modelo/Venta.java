@@ -2,7 +2,7 @@ package ar.unrn.edu.modelo;
 
 import java.time.LocalDateTime;
 
-public class Venta {
+public class Venta extends Observable{
 
 	private double monto;
 	private double litros;

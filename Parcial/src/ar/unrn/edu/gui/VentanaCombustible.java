@@ -6,6 +6,7 @@ import javax.swing.border.EmptyBorder;
 
 import ar.unrn.edu.modelo.NaftaComun;//
 import ar.unrn.edu.modelo.NaftaSuper;//
+import ar.unrn.edu.modelo.Observer;
 import ar.unrn.edu.modelo.RepositorioDeVentas;
 
 import javax.swing.JLabel;
@@ -25,35 +26,49 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 
-public class VentanaCombustible extends JFrame {
+public class VentanaCombustible implements Observer{
 
 	private JPanel contentPane;
 	private RepositorioDeVentas repo;
 	private NaftaSuper naftaSuper;//
 	private NaftaComun naftaComun;//
+	private JFrame frame;
 
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public VentanaCombustible(RepositorioDeVentas repo) {
 		this.repo = repo;
 	}
 
 	private void setupVentana() {
+
 		this.naftaComun = new NaftaComun();
 		this.naftaSuper = new NaftaSuper();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 521, 300);
+		this.frame = new JFrame();
+		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.frame.setBounds(100, 100, 521, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.frame.setContentPane(contentPane);
 		contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
+		
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+
+		JLabel lblEmail = new JLabel("Email");
+		TextField textFieldEmail = new TextField();
+		panel.add(lblEmail);
+		panel.add(textFieldEmail);
+
 		JLabel lblLitros = new JLabel("Litros");
 		panel.add(lblLitros);
 		TextField textFieldLitros = new TextField();
 		panel.add(textFieldLitros);
 		JLabel lblTipoNafta = new JLabel("Tipo combustible");
-		panel.add(lblTipoNafta);
+		panel.add(lblTipoNafta);	
 		JComboBox comboBoxNafta = new JComboBox();
 		panel.add(comboBoxNafta);
 		comboBoxNafta.addItem("Super");
@@ -89,11 +104,11 @@ public class VentanaCombustible extends JFrame {
 					if (comboBoxNafta.getSelectedItem().toString() == "Super") {
 						repo.realizarVenta(Double.parseDouble(textFieldLitros.getText()), naftaSuper
 								.calcularDescuento(Double.parseDouble(textFieldLitros.getText()), LocalDateTime.now()),
-								LocalDateTime.now());
+								LocalDateTime.now(), textFieldEmail.getText());
 					} else {
 						repo.realizarVenta(Double.parseDouble(textFieldLitros.getText()), naftaComun
 								.calcularDescuento(Double.parseDouble(textFieldLitros.getText()), LocalDateTime.now()),
-								LocalDateTime.now());
+								LocalDateTime.now(), textFieldEmail.getText());
 					}
 					JOptionPane.showMessageDialog(btnPagar, "Pago registrado con exito");
 					textFieldLitros.setText("");
@@ -105,7 +120,7 @@ public class VentanaCombustible extends JFrame {
 
 	public void mostrarVentana() {
 		setupVentana();
-		this.setVisible(true);
+		this.frame.setVisible(true);
 	}
 
 	private boolean validarCampo(String s) {
@@ -124,5 +139,11 @@ public class VentanaCombustible extends JFrame {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public void enviarEmail(String destinatario) {
+		
+		
 	}
 }
