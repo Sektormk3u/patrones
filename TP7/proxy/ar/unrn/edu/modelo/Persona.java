@@ -1,3 +1,4 @@
+package ar.unrn.edu.modelo;
 import java.util.Set;
 
 public class Persona {

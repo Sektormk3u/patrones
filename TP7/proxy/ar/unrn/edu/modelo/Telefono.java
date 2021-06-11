@@ -1,3 +1,4 @@
+package ar.unrn.edu.modelo;
 
 public class Telefono {
 	private String numero;
