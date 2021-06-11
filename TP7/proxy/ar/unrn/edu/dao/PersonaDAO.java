@@ -16,7 +16,7 @@ public class PersonaDAO{
 	protected Connection obtenerConexion() {
 		String url = "jdbc:mysql://localhost:3306/tp7";
 		String user = "root";
-		String password = "15415260";
+		String password = "root";
 		try {
 			return DriverManager.getConnection(url, user, password);
 		} catch (SQLException e) {

@@ -26,7 +26,7 @@ public class Proxy<E> implements Set<Telefono> {
 	public int size() {
 		String url = "jdbc:mysql://localhost:3306/tp7";
 		String user = "root";
-		String password = "15415260";
+		String password = "root";
 		try {
 			Connection conn = DriverManager.getConnection(url, user, password);
 			String sql = "select count(numero) " + "from personas p, telefonos t " + "where p.id = t.idpersona and p.id = ?";
@@ -72,7 +72,7 @@ public class Proxy<E> implements Set<Telefono> {
 	public <T> T[] toArray(T[] a) {
 		String url = "jdbc:mysql://localhost:3306/tp7";
 		String user = "root";
-		String password = "15415260";
+		String password = "root";
 		try {
 			Connection conn = DriverManager.getConnection(url, user, password);
 			String sql = "select t.numero " + "from personas p, telefonos t " + "where p.id = t.idpersona and p.id = ?";
